@@ -18,6 +18,8 @@ public class UserDto {
 	private String password;
  
 	private String name;
+	
+	private String cash;
  
 	private Set<Long> roles;
  

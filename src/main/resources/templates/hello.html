@@ -4,7 +4,7 @@
 <title>Hello World!</title>
 </head>
 <body>
-	<h1 th:inline="text">Hello [[${#httpServletRequest.remoteUser}]]!</h1>
+	<h3 th:inline="text">안녕하세요 [[${#httpServletRequest.remoteUser}]]님!</h3>
 	<br>
  
 	<!--SYSTEM 역할을 갖는다면 이 글이 보임-->
@@ -17,22 +17,31 @@
 	<h3 sec:authorize="hasRole(T(com.example.security.enums.UserRole).SYSTEM) and hasAuthority(T(com.example.security.enums.UserAuthority).OP_DELETE_DATA)">Has OP_DELETE_DATA Authority</h3>
  
 	<div>
-		Authorities : <span sec:authentication="principal.authorities"></span>
+		접근권한 : <span sec:authentication="principal.authorities"></span>
 	</div>
-	<br>
- 
+	
+	<br />
+	<br />
+	
 	<p>
-		시스템 관리자 페이지로 이동 <a th:href="@{/system}">SYSTEM</a>
+		<a th:href="@{/purchase}">물품 구매</a>
+	</p>
+	
+	<br />
+	<br />
+	
+	<p>
+		<a th:href="@{/system}">시스템 관리자 페이지</a>
 	</p>
 	<p>
-		시스템 관리자 등록 페이지로 이동 <a th:href="@{/system/create}">SYSTEM CREATE</a>
+		<a th:href="@{/system/create}">시스템 관리자 등록 페이지</a>
 	</p>
 	<p>
-		시스템 관리자 삭제 페이지로 이동 <a th:href="@{/system/delete}">SYSTEM DELETE</a>
+		<a th:href="@{/system/delete}">시스템 관리자 삭제 페이지</a>
 	</p>
  
 	<form th:action="@{/logout}" method="post">
-		<input type="submit" value="Sign Out" />
+		<input type="submit" value="로그아웃" />
 	</form>
 </body>
 </html>

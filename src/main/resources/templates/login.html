@@ -4,21 +4,23 @@
 <title>Spring Security Example</title>
 </head>
 <body>
-	<h1>Spring Security Login page</h1>
-	<div th:if="${param.error}">Invalid username and password.</div>
-	<div th:if="${param.logout}">You have been logged out.</div>
+	<h1>로그인 페이지</h1>
+	<div th:if="${param.error}">유효하지 않은 아이디, 패스워드입니다.</div>
+	<div th:if="${param.logout}">로그아웃됨</div>
+	<br />
 	<form th:action="@{/login}" method="post">
+	
+		<div><label> ID </label></div>
+		<div><label><input type="text" name="username" /></label></div>
+		
+		<br />
+		<div> 패스워드 </div>
+		<div><label><input type="password" name="password" /></label></div>
+		
+		<br />
 		<div>
-			<label> User Name : <input type="text" name="username" /></label>
-		</div>
-		<br>
-		<div>
-			<label> Password : <input type="password" name="password" /></label>
-		</div>
-		<br>
-		<div>
-			<input type="submit" value="Sign In" />
-			<input type="button" onclick="location.href='/signUp';" value="Sign Up" />
+			<input type="submit" value="로그인" />
+			<input type="button" onclick="location.href='/signUp';" value="회원가입" />
 		</div>
 	</form>
 </body>
