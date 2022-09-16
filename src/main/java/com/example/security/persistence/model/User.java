@@ -34,16 +34,20 @@ public class User {
  
 	@Column(name = "name")
 	private String name;
+	
+	@Column(name = "cash")
+	private int cash;
  
 	@ManyToMany(cascade = { CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH })
 	@JoinTable(name = "tb_user_roles", joinColumns = @JoinColumn(name = "user_id"), inverseJoinColumns = @JoinColumn(name = "role_id"))
 	private Set<Role> roles;
 	
 	@Builder
-	public User(String id, String password, String name, Set<Role> roles) {
+	public User(String id, String password, String name, int cash, Set<Role> roles) {
 		this.id = id;
 		this.password = password;
 		this.name = name;
+		this.cash = cash;
 		this.roles = roles;
 	}
 }
