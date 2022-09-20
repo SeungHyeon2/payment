@@ -4,6 +4,7 @@
 <title>Spring Security Example</title>
 </head>
 <body>
+	<div th:include="include/nav.html"></div>
 	<h1>로그인 페이지</h1>
 	<div th:if="${param.error}">유효하지 않은 아이디, 패스워드입니다.</div>
 	<div th:if="${param.logout}">로그아웃됨</div>

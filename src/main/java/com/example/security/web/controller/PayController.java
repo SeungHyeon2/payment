@@ -7,6 +7,8 @@ import java.util.Map;
 import javax.annotation.PostConstruct;
 import javax.servlet.http.HttpServletRequest;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -30,10 +32,19 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 @Controller
 public class PayController {
 	
+	private final Logger log = LoggerFactory.getLogger(getClass());
+	
+	@GetMapping("pay/list")
+	public String list(HttpServletRequest request) {
+		log.info("상품 리스트", request);
+		return "pay/list";
+	}
+	
 	// 구매 페이지로 이동
 	@GetMapping("/purchase")
 	public String purchase(HttpServletRequest request) {
-		return "purchase";
+		log.info("구매 페이지로 이동", request);
+		return "pay/purchase";
 	}
 	
 	private final RestTemplate restTemplate = new RestTemplate();
