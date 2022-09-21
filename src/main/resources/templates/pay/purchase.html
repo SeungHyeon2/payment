@@ -37,13 +37,13 @@
 
     button.addEventListener("click", function () {
         var method = document.querySelector('input[name=method]:checked').value; // "카드" 혹은 "가상계좌"
-
+		
         var paymentData = {
             amount: 19000,
             orderId: orderId,
             orderName: "토스 티셔츠",
             customerName: "이토페",
-            successUrl: window.location.origin + "/success",
+            successUrl: window.location.origin + "/paymentSuccess",
             failUrl: window.location.origin + "/fail",
         };
 

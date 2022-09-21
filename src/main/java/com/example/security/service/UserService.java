@@ -55,5 +55,23 @@ public class UserService {
 		userRepository.updateCash(id, orgCash+amount);
 		
 	}
+	
+	public void purchase(int amount, String id) {
+		User user = new User();
+		user = userRepository.findOneById(id);
+		log.info("amount : " + amount);
+		
+		int orgCash = user.getCash();
+		log.info("orgCash : " + orgCash);
+		
+		if(orgCash-amount >= 0) {
+			userRepository.updateCash(id, orgCash-amount);
+		}else if(orgCash-amount < 0) {
+			userRepository.updateCash(id, 0);
+		}else {
+			log.info("에러가 발생했습니다");
+		}
+		
+	}
 
 }

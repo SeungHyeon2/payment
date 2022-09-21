@@ -98,7 +98,7 @@ public class PayController {
     private final String SECRET_KEY = "test_ak_mnRQoOaPz8LwjZD1Oljry47BMw6v";
 
     // 토스 페이먼츠 결제 성공 시
-    @RequestMapping("/success")
+    @RequestMapping("/paymentSuccess")
     public String confirmPayment(
             @RequestParam String paymentKey, @RequestParam String orderId, @RequestParam Long amount,
             Model model) throws Exception {
@@ -119,6 +119,62 @@ public class PayController {
         Map<String, String> payloadMap = new HashMap<>();
         payloadMap.put("orderId", orderId);
         payloadMap.put("amount", String.valueOf(amount));
+        
+
+        log.info("충전량 : " + amount);
+        
+        HttpEntity<String> request = new HttpEntity<>(objectMapper.writeValueAsString(payloadMap), headers);
+
+        ResponseEntity<JsonNode> responseEntity = restTemplate.postForEntity(
+                "https://api.tosspayments.com/v1/payments/" + paymentKey, request, JsonNode.class);
+
+        if (responseEntity.getStatusCode() == HttpStatus.OK) {
+            JsonNode successNode = responseEntity.getBody();
+            model.addAttribute("orderId", successNode.get("orderId").asText());
+            String secret = successNode.get("secret").asText(); // 가상계좌의 경우 입금 callback 검증을 위해서 secret을 저장하기를 권장함
+            
+            userService.purchase(amount.intValue(), id);
+
+            int cash = userService.getUserCash(id);
+    
+            model.addAttribute("orderCash", amount);
+            model.addAttribute("userCash", cash);
+            
+            // 결제 완료 까지 완료했으나 amount 값이 반영이 되지 않음 -> 서비스 로직 문제
+            log.info("결제완료");
+            
+            return "pay/paymentSuccess";
+        } else {
+            JsonNode failNode = responseEntity.getBody();
+            model.addAttribute("message", failNode.get("message").asText());
+            model.addAttribute("code", failNode.get("code").asText());
+            return "pay/fail";
+        }
+    }
+    
+    // 토스 페이먼츠 충전 성공 시
+    @RequestMapping("/chargementSuccess")
+    public String confirmCharge(
+            @RequestParam String paymentKey, @RequestParam String orderId, @RequestParam Long amount,
+            Model model) throws Exception {
+
+    	// SecurityContextHolder 빈을 통해 SpringSecurity 로그인 객체를 불러옴
+		Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+		UserDetails userDetails = (UserDetails)principal;
+		String id = userDetails.getUsername();
+    	
+    	log.info("상품 결제");
+		log.info("아이디 : " + id);
+    	
+        HttpHeaders headers = new HttpHeaders();
+        // headers.setBasicAuth(SECRET_KEY, ""); // spring framework 5.2 이상 버전에서 지원
+        headers.set("Authorization", "Basic " + Base64.getEncoder().encodeToString((SECRET_KEY + ":").getBytes()));
+        headers.setContentType(MediaType.APPLICATION_JSON);
+
+        Map<String, String> payloadMap = new HashMap<>();
+        payloadMap.put("orderId", orderId);
+        payloadMap.put("amount", String.valueOf(amount));
+        
 
         log.info("충전량 : " + amount);
         
@@ -133,7 +189,7 @@ public class PayController {
             String secret = successNode.get("secret").asText(); // 가상계좌의 경우 입금 callback 검증을 위해서 secret을 저장하기를 권장함
             
             userService.charge(amount.intValue(), id);
-            
+
             int cash = userService.getUserCash(id);
     
             model.addAttribute("orderCash", amount);
@@ -142,7 +198,7 @@ public class PayController {
             // 결제 완료 까지 완료했으나 amount 값이 반영이 되지 않음 -> 서비스 로직 문제
             log.info("결제완료");
             
-            return "pay/success";
+            return "pay/ChargementSuccess";
         } else {
             JsonNode failNode = responseEntity.getBody();
             model.addAttribute("message", failNode.get("message").asText());
@@ -150,6 +206,7 @@ public class PayController {
             return "pay/fail";
         }
     }
+    
 
     // 토스 페이먼츠 구매 실패 시
     @RequestMapping("/fail")

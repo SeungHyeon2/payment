@@ -28,13 +28,15 @@
     <button id="payment-button">결제하기</button>
 </section>
 <!-- payments -->
-<script src="https://js.tosspayments.com/v1"></script>
+<script src="js/tosspayments.js"></script>
 <script>
     var tossPayments = TossPayments("test_ck_JQbgMGZzorzzXdypGB7rl5E1em4d");
     var button = document.getElementById("payment-button");
 
     var orderId = new Date().getTime();
 
+    
+    
     button.addEventListener("click", function () {
         var method = document.querySelector('input[name=method]:checked').value; // "카드" 혹은 "가상계좌"
 
@@ -43,7 +45,7 @@
             orderId: orderId,
             orderName: "금액 충전",
             customerName: "TEST",
-            successUrl: window.location.origin + "/success",
+            successUrl: window.location.origin + "/chargementSuccess",
             failUrl: window.location.origin + "/fail",
         };
 
