@@ -4,6 +4,8 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -19,10 +21,10 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class UserService {
  
+	private final Logger log = LoggerFactory.getLogger(getClass());
+	
 	private final UserRepository userRepository;
- 
 	private final RoleRepository roleRepository;
- 
 	private final BCryptPasswordEncoder bCryptPasswordEncoder;
  
 	public void insert(UserDto userDto) {
@@ -42,10 +44,16 @@ public class UserService {
 	
 	
 	public void charge(int amount, String id) {
+		
 		User user = new User();
 		user = userRepository.findOneById(id);
+		log.info("amount : " + amount);
+		
 		int orgCash = user.getCash();
-		user.setCash(orgCash + amount);
+		log.info("orgCash : " + orgCash);
+		
+		userRepository.updateCash(id, orgCash+amount);
+		
 	}
 
 }

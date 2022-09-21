@@ -73,6 +73,7 @@ public class PayController {
 	@GetMapping("/charge")
 	public String charge(HttpServletRequest request) {
 		log.info("충전 페이지로 이동", request);
+		
 		return "pay/charge";
 	}
 	
@@ -129,12 +130,13 @@ public class PayController {
         if (responseEntity.getStatusCode() == HttpStatus.OK) {
             JsonNode successNode = responseEntity.getBody();
             model.addAttribute("orderId", successNode.get("orderId").asText());
-            model.addAttribute("orderCash", successNode.get("amount").asText());
             String secret = successNode.get("secret").asText(); // 가상계좌의 경우 입금 callback 검증을 위해서 secret을 저장하기를 권장함
             
             userService.charge(amount.intValue(), id);
             
             int cash = userService.getUserCash(id);
+    
+            model.addAttribute("orderCash", amount);
             model.addAttribute("userCash", cash);
             
             // 결제 완료 까지 완료했으나 amount 값이 반영이 되지 않음 -> 서비스 로직 문제
