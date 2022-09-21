@@ -19,10 +19,16 @@
     <div><label><input type="radio" name="method" value="가상계좌"/>가상계좌</label></div>
     <div><label><input type="radio" name="method" value="계좌이체"/>계좌이체</label></div>
     <div><label><input type="radio" name="method" value="휴대폰"/>휴대폰</label></div>
+    <div><label><input type="radio" name="method" value="토스페이"/>토스페이</label></div>
+    <div><label><input type="radio" name="method" value="토스결제"/>토스결제</label></div>
+    <div><label><input type="radio" name="method" value="문화상품권"/>문화상품권</label></div>
+    <div><label><input type="radio" name="method" value="게임문화상품권"/>게임문화상품권</label></div>
+    <div><label><input type="radio" name="method" value="도서문화상품권"/>도서문화상품권</label></div>
+    <div><label><input type="radio" name="method" value="해외간편결제"/>해외간편결제</label></div>
     <p>----------------------</p>
     <button id="payment-button">결제하기</button>
 </section>
-<script src="https://js.tosspayments.com/v1"></script>
+<script src="js/tosspayments.js"></script>
 <script>
     var tossPayments = TossPayments("test_ck_JQbgMGZzorzzXdypGB7rl5E1em4d");
     var button = document.getElementById("payment-button");

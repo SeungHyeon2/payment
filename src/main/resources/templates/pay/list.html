@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html xmlns:th="https://www.thymeleaf.org" lang="ko">
+<html xmlns:th="https://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security" lang="ko">
 <head>
     <title>구매 가능 리스트</title>
     <meta charset="utf-8"/>
@@ -18,6 +18,10 @@
 </head>
 <body>
 <div th:include="include/nav.html"></div>
+ 
+<h3 th:inline="text">안녕하세요 [[${#httpServletRequest.remoteUser}]]님!</h3>
+<b>Authenticated name</b><div sec:authentication="name"></div>
+<h3 th:text="'현재 잔액은 ' + ${userCash} + '원 입니다.'"></h3>
 <section>
     <h1>상품 목록</h1>
     <table class="tg">

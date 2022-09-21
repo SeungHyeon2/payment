@@ -13,17 +13,15 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 public class UserDto {
-	private String id;
- 
-	private String password;
- 
-	private String name;
 	
-	private String cash;
- 
+	private String id;
+	private String password;
+	private String name;
+	private int cash;
 	private Set<Long> roles;
- 
+
 	public User toEntity(Set<Role> roles) {
-		return User.builder().id(id).password(password).name(name).roles(roles).build();
+		return User.builder().id(id).password(password).name(name).cash(cash).roles(roles).build();
 	}
+	
 }

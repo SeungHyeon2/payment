@@ -15,12 +15,14 @@ import org.hibernate.annotations.DynamicUpdate;
 
 import lombok.AccessLevel;
 import lombok.Builder;
+import lombok.Data;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
  
-@NoArgsConstructor(access = AccessLevel.PROTECTED)
+@NoArgsConstructor(access = AccessLevel.PUBLIC)
 @Getter
 @Entity
+@Data
 @Table(name = "tb_user")
 @DynamicUpdate
 public class User {
@@ -50,4 +52,5 @@ public class User {
 		this.cash = cash;
 		this.roles = roles;
 	}
+	
 }

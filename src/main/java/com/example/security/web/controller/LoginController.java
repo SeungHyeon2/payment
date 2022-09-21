@@ -23,7 +23,7 @@ public class LoginController {
 	public String login(HttpServletRequest request) {
 		return "login";
 	}
- 
+
 	@GetMapping("/signUp")
 	public String signUp(Model model) {
 		model.addAttribute("userDto", new UserDto());

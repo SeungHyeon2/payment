@@ -10,8 +10,10 @@
 	<div th:include="include/nav.html"></div>
 <section>
     <h1>결제 성공</h1>
-    <h3>상품명: 토스 티셔츠</h3>
+    <!-- <h3>상품명: 토스 티셔츠</h3> -->
     <h3 th:text="'주문번호 : '+ ${orderId}">주문 번호</h3>
+    <h3 th:text="'결제 금액은 ' + ${orderCash} + '원 입니다.'"></h3>
+    <h3 th:text="'현재 잔액은 ' + ${userCash} + '원 입니다.'"></h3>
 </section>
 </body>
 </html>
