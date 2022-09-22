@@ -42,7 +42,7 @@ public class PayController {
 	@Autowired
 	UserService userService;
 	
-	// 상품 리스트로 이동
+	// 게이트웨이로 이동
 	@GetMapping("pay/list")
 	public ModelAndView list(HttpServletRequest request) {
 		
@@ -63,6 +63,12 @@ public class PayController {
 		return mv;
 	}
 	
+	@GetMapping("/pay/productList")
+	public String ProductList(HttpServletRequest request) {
+		
+		return "pay/productList";
+	}
+	
 	// 구매 페이지로 이동
 	@GetMapping("/purchase")
 	public String purchase(HttpServletRequest request) {
@@ -70,11 +76,20 @@ public class PayController {
 		return "pay/purchase";
 	}
 	
+	
+	
+	// 충전 페이지로 이동
 	@GetMapping("/charge")
 	public String charge(HttpServletRequest request) {
 		log.info("충전 페이지로 이동", request);
 		
 		return "pay/charge";
+	}
+	
+	// 충전 리스트로 이동
+	@GetMapping("pay/chargeList")
+	public String chargeList(HttpServletRequest request) {
+		return "pay/chargeList";
 	}
 	
 	private final RestTemplate restTemplate = new RestTemplate();

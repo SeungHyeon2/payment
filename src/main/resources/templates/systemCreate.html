@@ -1,11 +1,51 @@
 <!DOCTYPE html>
 <html xmlns:th="https://www.thymeleaf.org">
 <head>
-	<title>Spring Security Example</title>
+	<title>Security 상품 등록 페이지</title>
+	<script src="http://madalla.kr/js/jquery-1.8.3.min.js"></script>
+
+	<script type="text/javascript">
+		$(function() {
+		    $("#myFile").on('change', function(){
+		    readURL(this);
+		    });
+		});
+		function readURL(input) {
+		    if (input.files && input.files[0]) {
+		        var reader = new FileReader();
+		        reader.onload = function (e) {
+		        $('#View').attr('src', e.target.result);
+		        }
+		        reader.readAsDataURL(input.files[0]);
+		    }
+		}
+	</script>
 </head>
 <body>
 	<div th:include="include/nav.html"></div>
 	<h3>SYSTEM CREATE</h3>
-	<p>안녕하세요. 이 페이지는 시스템 역할을 가지고 있고 OP_CREATE_DATA 권한을 가지고 있어야 접근이 가능합니다.</p>
+	<p>이 페이지는 시스템 역할과 OP_CREATE_DATA 권한을 가지고 있어야 접근이 가능합니다.</p>
+	
+	<br />
+	<section>
+		<h4>상품 등록</h4>
+		<div>
+			<form method="post" th:action="@{/product/upload}" enctype="multipart/form-data" id="imgForm">
+			
+				상품명<br />
+				<input type="text" name="productName"><br />
+				
+				상품 가격<br />
+				<input type="number" name="productPrice"><br />
+				
+				상품 이미지 등록<br />
+				<input type="file" name="file" id="myFile" multiple><br />
+				<img id="View" src="#" alt="이미지 미리보기"/>
+				
+				<br />
+				<button type="submit" onchange="readURL(this)">등록</button>
+			</form>
+		</div>
+	</section>
 </body>
 </html>
