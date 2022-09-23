@@ -1,9 +1,13 @@
 package com.example.security.service;
 
+import java.util.List;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 import com.example.security.persistence.dao.ProductRepository;
-import com.example.security.persistence.model.User;
+import com.example.security.persistence.model.Product;
 import com.example.security.util.FileUtils;
 
 import lombok.RequiredArgsConstructor;
@@ -13,14 +17,22 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class ProductService {
 
+	private final Logger log = LoggerFactory.getLogger(getClass());	
+	
 	private final ProductRepository productRepository;
 	FileUtils fileUtils = new FileUtils();
+	
+	public List<Product> getAllUsers() {
+		log.info("ProductService의 getAllUsers 메서드 실행");
+		return productRepository.findAll();
+	}
 	
 	public void upload(String product_name, String org_file_name, String stored_file_name, int file_size, int price) {
 		
 		productRepository.uploadProduct(product_name, org_file_name, stored_file_name, file_size, price);
 		
 	}
+	
 	
 //	public void charge(int amount, String id) {
 //		

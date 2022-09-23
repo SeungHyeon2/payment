@@ -1,5 +1,7 @@
 package com.example.security.persistence.dao;
 
+import java.util.List;
+
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
@@ -12,6 +14,8 @@ import com.example.security.persistence.model.Product;
 @Repository
 public interface ProductRepository extends JpaRepository<Product, String>{
 
+	List<Product> findAll();
+	
 	@Transactional
 	@Modifying
 	@Query(value = "UPDATE tb_user SET cash = :cash WHERE id = :id", nativeQuery = true)
@@ -21,6 +25,7 @@ public interface ProductRepository extends JpaRepository<Product, String>{
 	void uploadProduct(@Param("product_name") String product_name, @Param("org_file_name") String org_file_name, 
 			@Param("stored_file_name") String stored_file_name,
 			@Param("file_size") int file_size, @Param("price") long price);
+	
 }
 //User findOneById(String id);
 //

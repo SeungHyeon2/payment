@@ -2,6 +2,7 @@ package com.example.security.web.controller;
 
 import java.util.Base64;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import javax.annotation.PostConstruct;
@@ -30,6 +31,10 @@ import org.springframework.web.client.RestTemplate;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.example.security.persistence.model.CallbackPayload;
+import com.example.security.persistence.model.Charge;
+import com.example.security.persistence.model.Product;
+import com.example.security.service.ChargeService;
+import com.example.security.service.ProductService;
 import com.example.security.service.UserService;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -41,6 +46,12 @@ public class PayController {
 	
 	@Autowired
 	UserService userService;
+	
+	@Autowired
+	ChargeService chargeService;
+	
+	@Autowired
+	ProductService productService;
 	
 	// 게이트웨이로 이동
 	@GetMapping("pay/list")
@@ -64,33 +75,84 @@ public class PayController {
 	}
 	
 	@GetMapping("/pay/productList")
-	public String ProductList(HttpServletRequest request) {
+	public String ProductList(HttpServletRequest request, Model model) {
+		
+		List<Product> list = null;
+		list = productService.getAllUsers();
+		
+		model.addAttribute("list", list);
 		
 		return "pay/productList";
 	}
 	
 	// 구매 페이지로 이동
 	@GetMapping("/purchase")
-	public String purchase(HttpServletRequest request) {
+	public String purchase(HttpServletRequest request, Model model, @RequestParam(value = "name", required = false) String name) {
 		log.info("구매 페이지로 이동", request);
-		return "pay/purchase";
-	}
-	
-	
-	
-	// 충전 페이지로 이동
-	@GetMapping("/charge")
-	public String charge(HttpServletRequest request) {
-		log.info("충전 페이지로 이동", request);
+		log.info("상품 이름 : " + name);
 		
-		return "pay/charge";
+
+//		// SecurityContextHolder 빈을 통해 SpringSecurity 로그인 객체를 불러옴
+//		Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+//		UserDetails userDetails = (UserDetails)principal;
+//		String name = userDetails.getUsername();
+//		
+//		model.addAttribute("name", name);
+//		model.addAttribute("amount", amount);
+//		
+//		return "pay/charge";
+		
+		return "pay/purchase";
 	}
 	
 	// 충전 리스트로 이동
 	@GetMapping("pay/chargeList")
-	public String chargeList(HttpServletRequest request) {
+	public String chargeList(HttpServletRequest request, Model model) {
+		
+		List<Charge> list = null;
+		list = chargeService.getAllUsers();
+		
+		model.addAttribute("list", list);
+		
 		return "pay/chargeList";
 	}
+	
+	// 충전 페이지로 이동
+	@RequestMapping(value = "/charge")
+	public String charge(HttpServletRequest request, Model model, @RequestParam(value="amount", required=false) String amount) {
+		log.info("충전 페이지로 이동", request);
+		log.info("amount : " + amount);
+		
+		// SecurityContextHolder 빈을 통해 SpringSecurity 로그인 객체를 불러옴
+		Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+		UserDetails userDetails = (UserDetails)principal;
+		String name = userDetails.getUsername();
+		
+		model.addAttribute("name", name);
+		model.addAttribute("amount", amount);
+		
+		return "pay/charge";
+	}
+	
+	
+	// 게시물 조회
+//	@RequestMapping(value="/view", method = RequestMethod.GET)
+//	public void getView(@RequestParam("bno") int bno, Model model) throws Exception{
+//		
+//		BoardVO vo = service.view(bno);
+//		
+//		model.addAttribute("view", vo);
+//		
+//		// 댓글 조회
+//		List<ReplyVO> reply = null;
+//		reply = replyService.list(bno);
+//		model.addAttribute("reply", reply);
+//		
+//		// 첨부파일 조회
+//		List<Map<String, Object>> fileList = service.selectFileList(vo.getBno());
+//		model.addAttribute("file", fileList);
+//	}
+	
 	
 	private final RestTemplate restTemplate = new RestTemplate();
 
