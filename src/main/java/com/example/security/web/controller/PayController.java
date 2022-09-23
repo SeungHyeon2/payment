@@ -87,21 +87,34 @@ public class PayController {
 	
 	// 구매 페이지로 이동
 	@GetMapping("/purchase")
-	public String purchase(HttpServletRequest request, Model model, @RequestParam(value = "name", required = false) String name) {
+	public String purchase(HttpServletRequest request, Model model, @RequestParam(value = "product_name", required = false) String product_name,
+			@RequestParam("org_file_name") String org_file_name, @RequestParam("stored_file_name") String stored_file_name,
+			@RequestParam("file_size") int file_size, @RequestParam("price") long price) {
 		log.info("구매 페이지로 이동", request);
-		log.info("상품 이름 : " + name);
+		log.info("상품 이름 : " + product_name);
+		log.info("파일 이름 : " + org_file_name);
+		log.info("저장된 파일 이름 : " + stored_file_name);
+		log.info("파일 사이즈 : " + file_size);
+		log.info("상품 가격 : " + price);
 		
+		
+		model.addAttribute("product_name", product_name);
+		model.addAttribute("org_file_name", org_file_name);
+		model.addAttribute("stored_file_name", stored_file_name);
+		model.addAttribute("file_size", file_size);
+		model.addAttribute("price", price);
 
-//		// SecurityContextHolder 빈을 통해 SpringSecurity 로그인 객체를 불러옴
-//		Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-//		UserDetails userDetails = (UserDetails)principal;
-//		String name = userDetails.getUsername();
-//		
-//		model.addAttribute("name", name);
-//		model.addAttribute("amount", amount);
-//		
-//		return "pay/charge";
+		// SecurityContextHolder 빈을 통해 SpringSecurity 로그인 객체를 불러옴
+		Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+		UserDetails userDetails = (UserDetails)principal;
+		String customer_name = userDetails.getUsername();
+		log.info("customer_name : " + customer_name);
+	
+		model.addAttribute("customer_name" + customer_name);
+
 		
+		String imgPath = "/products/" + stored_file_name;
+		model.addAttribute("imgPath", imgPath);
 		return "pay/purchase";
 	}
 	
@@ -210,8 +223,13 @@ public class PayController {
             model.addAttribute("orderId", successNode.get("orderId").asText());
             String secret = successNode.get("secret").asText(); // 가상계좌의 경우 입금 callback 검증을 위해서 secret을 저장하기를 권장함
             
-            userService.purchase(amount.intValue(), id);
-
+            String result = userService.purchase(amount.intValue(), id);
+            
+            if(result == "잔액이 부족합니다.\n충전이 필요합니다.") {
+            	model.addAttribute("result", result);
+            	return "pay/fail";
+            }
+            
             int cash = userService.getUserCash(id);
     
             model.addAttribute("orderCash", amount);

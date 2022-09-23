@@ -13,6 +13,7 @@ import com.example.security.persistence.dao.RoleRepository;
 import com.example.security.persistence.dao.UserRepository;
 import com.example.security.persistence.model.Role;
 import com.example.security.persistence.model.User;
+import com.example.security.util.ScriptUtils;
 import com.example.security.web.dto.UserDto;
 
 import lombok.RequiredArgsConstructor;
@@ -56,7 +57,7 @@ public class UserService {
 		
 	}
 	
-	public void purchase(int amount, String id) {
+	public String purchase(int amount, String id) {
 		User user = new User();
 		user = userRepository.findOneById(id);
 		log.info("amount : " + amount);
@@ -66,10 +67,16 @@ public class UserService {
 		
 		if(orgCash-amount >= 0) {
 			userRepository.updateCash(id, orgCash-amount);
-		}else if(orgCash-amount < 0) {
+			return "결제 성공";
+		}else if(orgCash-amount == 0) {
 			userRepository.updateCash(id, 0);
-		}else {
+			return "결제 성공";
+		}else if(orgCash<amount) {
+			log.info("잔액이 부족합니다.\n충전이 필요합니다.");
+			return "잔액이 부족합니다.\\n충전이 필요합니다.";
+		}else{
 			log.info("에러가 발생했습니다");
+			return "에러가 발생했습니다";
 		}
 		
 	}
