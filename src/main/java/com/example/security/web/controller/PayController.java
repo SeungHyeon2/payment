@@ -35,6 +35,7 @@ import com.example.security.persistence.model.Charge;
 import com.example.security.persistence.model.Product;
 import com.example.security.service.ChargeService;
 import com.example.security.service.ProductService;
+import com.example.security.service.RecordService;
 import com.example.security.service.UserService;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -52,6 +53,9 @@ public class PayController {
 	
 	@Autowired
 	ProductService productService;
+	
+	@Autowired
+	RecordService recordService;
 	
 	// 게이트웨이로 이동
 	@GetMapping("pay/list")
@@ -110,8 +114,8 @@ public class PayController {
 		String customer_name = userDetails.getUsername();
 		log.info("customer_name : " + customer_name);
 	
-		model.addAttribute("customer_name" + customer_name);
-
+		model.addAttribute("customer_name", customer_name);
+		
 		
 		String imgPath = "/products/" + stored_file_name;
 		model.addAttribute("imgPath", imgPath);
@@ -190,7 +194,7 @@ public class PayController {
     // 토스 페이먼츠 결제 성공 시
     @RequestMapping("/paymentSuccess")
     public String confirmPayment(
-            @RequestParam String paymentKey, @RequestParam String orderId, @RequestParam Long amount,
+            @RequestParam String paymentKey, @RequestParam String orderId, @RequestParam Long amount, @RequestParam String customerName, @RequestParam String productName,
             Model model) throws Exception {
 
     	// SecurityContextHolder 빈을 통해 SpringSecurity 로그인 객체를 불러옴
@@ -209,7 +213,7 @@ public class PayController {
         Map<String, String> payloadMap = new HashMap<>();
         payloadMap.put("orderId", orderId);
         payloadMap.put("amount", String.valueOf(amount));
-        
+
 
         log.info("충전량 : " + amount);
         
@@ -231,9 +235,16 @@ public class PayController {
             }
             
             int cash = userService.getUserCash(id);
-    
+            
+            
             model.addAttribute("orderCash", amount);
             model.addAttribute("userCash", cash);
+            
+            //////////////////////////////////////////////////////////////////////////////////
+            // uid, pname, pamount
+            recordService.insertRecord(id, productName, amount);
+            //////////////////////////////////////////////////////////////////////////////////
+            
             
             // 결제 완료 까지 완료했으나 amount 값이 반영이 되지 않음 -> 서비스 로직 문제
             log.info("결제완료");

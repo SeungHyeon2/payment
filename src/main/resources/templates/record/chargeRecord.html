@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html xmlns:th="https://www.thymeleaf.org" lang="ko">
+<head>
+    <title>충전 이력</title>
+    <meta http-equiv="x-ua-compatible" content="ie=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"/>
+    <link rel="stylesheet" href="/stylesheets/style.css" />
+    <style type="text/css">
+		.tg  {border-collapse:collapse;border-spacing:0;}
+		.tg td{border-color:black;border-style:solid;border-width:1px;font-family:Arial, sans-serif;font-size:14px;
+		  overflow:hidden;padding:10px 5px;word-break:normal;}
+		.tg th{border-color:black;border-style:solid;border-width:1px;font-family:Arial, sans-serif;font-size:14px;
+		  font-weight:normal;overflow:hidden;padding:10px 5px;word-break:normal;}
+		.tg .tg-c3ow{border-color:inherit;text-align:center;vertical-align:top}
+		.tg .tg-0pky{border-color:inherit;text-align:left;vertical-align:top}
+	</style>
+</head>
+
+<body>
+	<div th:include="include/nav.html"></div>
+	<section>
+		<h1 th:text="${uid} + '님 충전 이력'"></h1>
+		<table class="tg">
+			<thead>
+				<tr>
+					<th class="tg-0pky">사용자</th>
+					<th class="tg-0pky">상품 이름</th>
+					<th class="tg-0pky">상품 금액</th>
+					<th class="tg-0pky">결제일</th>
+				</tr>
+			</thead>
+			
+			<tbody>
+				<tr th:each="list : ${list}">
+					<td class="tg-c3ow" th:text="${list.uid}"></td>
+					<td class="tg-c3ow" th:text="${list.pname}"></td>
+					<td class="tg-c3ow" th:text="${list.pamount}"></td>
+					<td class="tg-c3ow" th:text="${list.reg_date}"></td>
+				</tr>
+			</tbody>
+			
+		</table>
+		<h4 th:text="${uid} + '님의 총 충전 횟수 : ' +${count}"></h4>
+		<h4 th:text="${uid} + '님의 총 충전 금액 : ' + ${count}"></h4>
+	</section>
+</body>
+</html>
