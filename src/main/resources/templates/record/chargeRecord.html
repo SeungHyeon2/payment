@@ -24,24 +24,22 @@
 			<thead>
 				<tr>
 					<th class="tg-0pky">사용자</th>
-					<th class="tg-0pky">상품 이름</th>
-					<th class="tg-0pky">상품 금액</th>
-					<th class="tg-0pky">결제일</th>
+					<th class="tg-0pky">충전 금액</th>
+					<th class="tg-0pky">충전 일자</th>
 				</tr>
 			</thead>
 			
 			<tbody>
 				<tr th:each="list : ${list}">
 					<td class="tg-c3ow" th:text="${list.uid}"></td>
-					<td class="tg-c3ow" th:text="${list.pname}"></td>
-					<td class="tg-c3ow" th:text="${list.pamount}"></td>
+					<td class="tg-c3ow" th:text="${list.camount}"></td>
 					<td class="tg-c3ow" th:text="${list.reg_date}"></td>
 				</tr>
 			</tbody>
 			
 		</table>
 		<h4 th:text="${uid} + '님의 총 충전 횟수 : ' +${count}"></h4>
-		<h4 th:text="${uid} + '님의 총 충전 금액 : ' + ${count}"></h4>
+		<h4 th:text="${uid} + '님의 총 충전 금액 : ' + ${sum}"></h4>
 	</section>
 </body>
 </html>

@@ -24,4 +24,7 @@ public interface PayRecordRepository extends JpaRepository<PayRecord, String>{
 	
 	@Query(value = "SELECT COUNT(*) FROM tb_pay_record WHERE uid = :uid", nativeQuery = true)
 	int countRecord(@Param("uid") String uid);
+	
+	@Query(value = "SELECT SUM(pamount) FROM tb_pay_record WHERE uid = :uid", nativeQuery = true)
+	int totalCharge(@Param("uid") String uid);
 }

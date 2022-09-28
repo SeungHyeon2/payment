@@ -40,4 +40,8 @@ public class ChargeService {
 	}
 
 	
+	public int sum(String uid) {
+		return chargeRecordRepository.totalCharge(uid);
+	}
+	
 }

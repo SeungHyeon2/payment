@@ -32,6 +32,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import com.example.security.persistence.model.CallbackPayload;
 import com.example.security.persistence.model.Charge;
+import com.example.security.persistence.model.ChargeRecord;
 import com.example.security.persistence.model.Product;
 import com.example.security.service.ChargeService;
 import com.example.security.service.ProductService;
@@ -303,6 +304,9 @@ public class PayController {
             
             // 결제 완료 까지 완료했으나 amount 값이 반영이 되지 않음 -> 서비스 로직 문제
             log.info("결제완료");
+            
+            chargeService.insertChargeRecord(id, amount);
+
             
             return "pay/ChargementSuccess";
         } else {

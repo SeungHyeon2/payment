@@ -33,6 +33,10 @@ public class ProductService {
 		
 	}
 	
+	public void deleteProduct(String stored_file_name) {
+		productRepository.deleteProduct(stored_file_name);
+	}
+	
 	
 //	public void charge(int amount, String id) {
 //		

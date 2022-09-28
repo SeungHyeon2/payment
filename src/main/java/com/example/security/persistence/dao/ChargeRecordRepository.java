@@ -17,11 +17,17 @@ public interface ChargeRecordRepository extends JpaRepository<ChargeRecord, Stri
 	@Query(value = "INSERT INTO tb_charge_record(uid, camount) VALUES (:uid, :camount)", nativeQuery= true)
 	void insertChargeRecord(@Param("uid") String uid, @Param("camount") long camount);
 	
+	
 	@Query(value = "SELECT * FROM tb_charge_record WHERE uid = :uid", nativeQuery = true)
 	List<ChargeRecord> findChargeRecord(@Param("uid") String uid);
 	
+	
 	@Query(value = "SELECT COUNT(*) FROM tb_charge_record WHERE uid = :uid", nativeQuery= true)
 	int countChargeRecord(@Param("uid") String uid);
+	
+	
+	@Query(value = "SELECT SUM(camount) FROM tb_charge_record WHERE uid = :uid", nativeQuery = true)
+	int totalCharge(@Param("uid") String uid);
 }
 
 //@Repository

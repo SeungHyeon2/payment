@@ -7,6 +7,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 import com.example.security.persistence.dao.PayRecordRepository;
+import com.example.security.persistence.model.ChargeRecord;
 import com.example.security.persistence.model.PayRecord;
 
 import lombok.RequiredArgsConstructor;
@@ -35,8 +36,12 @@ public class RecordService {
 		return payRecordRepository.findRecord(uid);
 	}
 	
+	
 	public int count(String uid) {
 		return payRecordRepository.countRecord(uid);
 	}
 	
+	public int sum(String uid) {
+		return payRecordRepository.totalCharge(uid);
+	}
 }

@@ -5,6 +5,17 @@
 	<script src="http://madalla.kr/js/jquery-1.8.3.min.js"></script>
 
 	<script type="text/javascript">
+	
+	$('#btn').click(function(){
+		if($('#productName').val == ''){
+			return false;
+		}
+		if($('#productPrice').val == ''){
+			return false;
+		}
+		return true;
+	});
+	
 		$(function() {
 		    $("#myFile").on('change', function(){
 		    readURL(this);
@@ -19,6 +30,8 @@
 		        reader.readAsDataURL(input.files[0]);
 		    }
 		}
+		
+		
 	</script>
 </head>
 <body>
@@ -33,17 +46,17 @@
 			<form method="post" th:action="@{/product/upload}" enctype="multipart/form-data" id="imgForm">
 			
 				상품명<br />
-				<input type="text" name="productName"><br />
+				<input type="text" name="productName" id="productName"><br />
 				
 				상품 가격<br />
-				<input type="number" name="productPrice"><br />
+				<input type="number" name="productPrice" id="productPrice"><br />
 				
 				상품 이미지 등록<br />
 				<input type="file" name="file" id="myFile" multiple><br />
 				<img id="View" src="#" alt="이미지 미리보기"/>
 				
 				<br />
-				<button type="submit" onchange="readURL(this)">등록</button>
+				<button type="submit" onchange="readURL(this)" id="btn">등록</button>
 			</form>
 		</div>
 	</section>

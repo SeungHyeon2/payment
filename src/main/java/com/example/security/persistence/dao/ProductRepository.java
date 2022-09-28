@@ -26,6 +26,9 @@ public interface ProductRepository extends JpaRepository<Product, String>{
 			@Param("stored_file_name") String stored_file_name,
 			@Param("file_size") int file_size, @Param("price") long price);
 	
+	
+	@Query(value = "DELETE FROM tb_product WHERE stored_file_name = :stored_file_name" ,nativeQuery = true)
+	void deleteProduct(@Param("stored_file_name") String stroed_file_name);
 }
 //User findOneById(String id);
 //

@@ -42,13 +42,14 @@
         var method = document.querySelector('input[name=method]:checked').value; // "카드" 혹은 "가상계좌"
 		
         var preAmount = '[(${amount})]';
+        var name = '[(${name})]';
         
         var paymentData = {
         	amount : preAmount,
         	//orderId : preName,
             orderId: orderId,
             orderName: "금액 충전",
-            customerName: "TEST",
+            customerName: name,
             successUrl: window.location.origin + "/chargementSuccess",
             failUrl: window.location.origin + "/fail",
         };
